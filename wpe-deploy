@@ -1,0 +1,8 @@
+#!/bin/bash
+
+exec docker run \
+     -e WPE_REMOTE="$1"\
+     -e SSH_PRIVATE_KEY="`cat ~/.ssh/id_rsa`"\
+     --interactive --tty --rm \
+     --volume "$PWD:/git/original" \
+     "utulsa/wpe-deploy:latest"
