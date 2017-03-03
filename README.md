@@ -3,7 +3,7 @@
 A script for deploying WP Engine websites using Git that addresses some issues that we've encountered with tracking our websites via git, namely:
 
 1. There are some files tracked in the repository that should not be hosted on WP Engine, such as `docker-compose.yml` and documentation.
-2. It would be preferable to have 
+2. WP Engine cannot pull from private submodules at all.
 3. It is challenging to push changes in the repo with GitLab CI.
 
 The script is based on [joshleecreates/wpengine-deploy-script](https://github.com/joshleecreates/wpengine-deploy-script).
