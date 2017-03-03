@@ -17,11 +17,16 @@ cd copy/
 WPE_KEY=$(cat /dev/urandom | tr -dc 'a-zA-Z0-9' | fold -w 8 | head -n 1)
 WPE_BRANCH=wpengine-$WPE_KEY
 
+if [[ ! -z "$WPE_REMOTE_URL" ]]
+   WPE_REMOTE=wpengine-remote-$WPE_KEY
+   git remote add $WPE_REMOTE $WPE_REMOTE_URL
+fi
 
 ## Assign private SSH key
 eval $(ssh-agent -s)
 ssh-add <(echo "$SSH_PRIVATE_KEY")
 mkdir -p ~/.ssh
+
 
 ## Configure git
 echo "Configuring git..."
