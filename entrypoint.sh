@@ -18,21 +18,7 @@ WPE_KEY=$(cat /dev/urandom | tr -dc 'a-zA-Z0-9' | fold -w 8 | head -n 1)
 WPE_BRANCH=wpengine-$WPE_KEY
 
 
-## Assign SSH keys
-# echo "Assigning SSH keys..."
-# mkdir -p ~/.ssh
-# if [[ ! -z "$SSH_PRIVATE_KEY" ]]; then
-#     echo " Assigning SSH private key..."
-#     echo $SSH_PRIVATE_KEY > ~/.ssh/id_rsa
-# fi
-# if [[ ! -z "$SSH_PUBLIC_KEY" ]]; then
-#     echo " Assigning SSH public key..."
-#     echo $SSH_PUBLIC_KEY > ~/.ssh/id_rsa.pub
-# fi
-# chmod 700 ~/.ssh/id_rsa
-# chmod 700 ~/.ssh/id_rsa.pub
-
-## Adding the keys via ssh agent
+## Assign private SSH key
 eval $(ssh-agent -s)
 ssh-add <(echo "$SSH_PRIVATE_KEY")
 mkdir -p ~/.ssh
