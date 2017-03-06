@@ -6,6 +6,8 @@ RUN apt-get update && apt-get install -y git && rm -rf /var/lib/apt/lists/*
 RUN echo "    IdentityFile ~/.ssh/id_rsa" >> /etc/ssh/ssh_config &&\
     echo "    StrictHostKeyChecking no" >> /etc/ssh/ssh_config
 
-COPY deploy.sh /usr/local/bin/run-deploy
+COPY run-deploy /usr/local/bin/run-deploy
+COPY setup-ssh /usr/local/bin/setup-ssh
 
-RUN chmod 111 /usr/local/bin/run-deploy
+RUN chmod 111 /usr/local/bin/run-deploy &&\
+    chmod 111 /usr/local/bin/setup-ssh

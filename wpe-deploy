@@ -1,9 +1,9 @@
 #!/bin/bash
 
 exec docker run \
-     -e WPE_REMOTE="$1"\
-     -e SSH_PRIVATE_KEY="`cat ~/.ssh/id_rsa`"\
+     -e WPE_REMOTE="$1" \
+     -e SSH_PRIVATE_KEY="`cat ~/.ssh/id_rsa`" \
      --volume "$PWD:/data" \
      -w "/data" \
      --interactive --tty --rm \
-     "utulsa/wpe-deploy:latest" run-deploy
+     "utulsa/wpe-deploy:latest" /bin/bash -c 'source setup-ssh && run-deploy'

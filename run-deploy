@@ -2,6 +2,8 @@
 
 set -e
 
+eval "$(cat $HOME/ssh-agent)"
+
 ################################################################
 ## Based on https://github.com/joshleecreates/wpengine-deploy-script
 ################################################################
@@ -12,6 +14,7 @@ mkdir -p $HOME/wpe-deploy/
 cp -r . $HOME/wpe-deploy/repo/
 cd $HOME/wpe-deploy/repo/
 
+
 ## Generate unique branch/remote to avoid issues with original repo
 WPE_KEY=$(cat /dev/urandom | tr -dc 'a-zA-Z0-9' | fold -w 8 | head -n 1)
 WPE_BRANCH=wpengine-$WPE_KEY
@@ -21,10 +24,10 @@ if [[ ! -z "$WPE_REMOTE_URL" ]]; then
    git remote add $WPE_REMOTE $WPE_REMOTE_URL;
 fi
 
-## Assign private SSH key
-eval $(ssh-agent -s)
-ssh-add <(echo "$SSH_PRIVATE_KEY")
-mkdir -p ~/.ssh
+
+# ## Assign private SSH key
+# eval $(ssh-agent -s)
+# ssh-add <(echo "$SSH_PRIVATE_KEY")
 
 
 ## Configure git
