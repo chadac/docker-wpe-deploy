@@ -6,12 +6,11 @@ set -e
 ## Based on https://github.com/joshleecreates/wpengine-deploy-script
 ################################################################
 
-
 ## Copy stuff to prevent side effects
 echo "Copying to backup directory..."
-cp -r original copy
-cd copy/
-
+mkdir -p $HOME/wpe-deploy/
+cp -r . $HOME/wpe-deploy/repo/
+cd $HOME/wpe-deploy/repo/
 
 ## Generate unique branch/remote to avoid issues with original repo
 WPE_KEY=$(cat /dev/urandom | tr -dc 'a-zA-Z0-9' | fold -w 8 | head -n 1)
@@ -37,7 +36,6 @@ git config --global user.name "GitLab CI"
 ## Push to WPEngine
 echo "Preparing for WPEngine deploy..."
 git checkout --orphan $WPE_BRANCH
-
 
 ## Recursively add .wpe-gitignore files into the .gitignore in that directory
 echo "Recursively modifying gitignored files..."

@@ -16,8 +16,9 @@ To run this script in the current directory, run:
         -e WPE_REMOTE="$1"\
         -e SSH_PRIVATE_KEY="`cat <PRIVATE_KEY_DIR>`"\
         --interactive --tty --rm \
-        --volume "$PWD:/git/original" \
-        utulsa/wpe-deploy:latest
+        --volume "$PWD:/data" \
+        -w "/data" \
+        utulsa/wpe-deploy:latest run-deploy
 
 The container creates a copy of your repository to avoid any potential side-effects.
 
@@ -34,17 +35,18 @@ The wordpress repository must be mounted to `/git/original` in the container.
 I currently bundle this in a executable, `wpe-deploy`, with the following:
 
     exec docker run \
-         -e WPE_REMOTE="$1"\
-         -e SSH_PRIVATE_KEY="`cat ~/.ssh/id_rsa`"\
-         --volume "$PWD:/git/original" \
-         --interactive --tty --rm \
-         "utulsa/wpe-deploy:latest"
+        -e WPE_REMOTE="$1"\
+        -e SSH_PRIVATE_KEY="`cat ~/.ssh/id_rsa`"\
+        --volume "$PWD:/data" \
+        -w "/data" \
+        --interactive --tty --rm \
+        "utulsa/wpe-deploy:latest" run-deploy
 
 So if the WP Engine remote is given in the repository as `production`, then
 
     wpe-deploy production
 
-will deploy to WPEngine production.
+will deploy the current branch to WPEngine production.
 
 ### WPE Ignored Files
 
