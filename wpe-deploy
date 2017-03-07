@@ -1,5 +1,13 @@
 #!/bin/bash
 
+# This sample script will use your SSH credentials to push to a
+# WPEngine remote. Usage is:
+#
+#   wpe-deploy <remote-name>
+#
+# where <remote-name> is the name of the WPEngine remote as given by
+# the Git repository.
+
 exec docker run \
      -e WPE_REMOTE="$1" \
      -e SSH_PRIVATE_KEY="`cat ~/.ssh/id_rsa`" \
