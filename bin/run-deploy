@@ -63,7 +63,7 @@ done
 echo "Tracking all files..."
 git rm -rf --cached . > /dev/null
 git add -A
-git commit -am "WPEngine build at `date`."
+git commit -am "WPEngine build at $(date)."
 
 
 ## Push to WPEngine
