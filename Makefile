@@ -17,7 +17,3 @@ uninstall:
 	@$(RM) $(DESTDIR)$(PREFIX)/bin/wpe-deploy
 	@docker rmi $(REPO):$(VERSION)
 	@docker rmi $(REPO):latest
-
-publish: build
-	@docker push $(REPO):$(VERSION) \
-	&& docker push $(REPO):latest
