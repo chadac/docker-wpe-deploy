@@ -2,8 +2,6 @@
 
 set -e
 
-eval "$(cat $HOME/ssh-agent)"
-
 ################################################################
 ## Based on https://github.com/joshleecreates/wpengine-deploy-script
 ################################################################
@@ -25,11 +23,6 @@ if [[ ! -z "$WPE_REMOTE_URL" ]]; then
 fi
 
 
-# ## Assign private SSH key
-# eval $(ssh-agent -s)
-# ssh-add <(echo "$SSH_PRIVATE_KEY")
-
-
 ## Configure git
 echo "Configuring git..."
 git config --global user.email "gitlab-ci@utulsa.co"
@@ -40,6 +33,22 @@ git config --global user.name "GitLab CI"
 echo "Preparing for WPEngine deploy..."
 git checkout --orphan $WPE_BRANCH
 
+
+## Recursively delete submodules
+echo "Removing submodules..."
+for i in $(find ./*/ -name ".git"); do
+    rm -rf $i
+    DIR=$(dirname $i)
+    ## Note: Will be fixed in Git 2.12 https://github.com/git/git/commit/55856a35b20dae2499d4e0b23551c7ba9a33baf2
+    ## Until then, move to temporary dir
+    mv "$DIR" "$DIR-tmp-$WPE_KEY"
+    git submodule deinit "$DIR"
+    rm -r "$DIR"
+    mv "$DIR-tmp-$WPE_KEY" "$DIR"
+done
+rm -f .gitmodules
+
+
 ## Recursively add .wpe-gitignore files into the .gitignore in that directory
 echo "Recursively modifying gitignored files..."
 echo -e "\n.wpe-gitignore" >> .gitignore
@@ -47,13 +56,6 @@ for i in $(find . -type f -name ".wpe-gitignore"); do
     echo -e "\n\n## WP ENGINE GITIGNORE" >> $(dirname $i)/.gitignore;
     cat $i >> $(dirname $i)/.gitignore;
     echo "" >> $(dirname $i)/.gitignore;
-done
-
-
-## Recursively delete submodules
-echo "Removing submodules..."
-for i in $(find ./*/ -type d -name ".git"); do
-    rm -rf $i
 done
 
 
