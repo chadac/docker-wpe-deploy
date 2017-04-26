@@ -14,9 +14,13 @@ cd $HOME/wpe-deploy/repo/
 
 
 ## Generate unique branch/remote to avoid issues with original repo
+
+# Unique identifier
 WPE_KEY=$(cat /dev/urandom | tr -dc 'a-zA-Z0-9' | fold -w 8 | head -n 1)
+# Branch to switch to. Not necessary, but just to be safe.
 WPE_BRANCH=wpengine-$WPE_KEY
 
+# Add a remote if there is an environment for a remote url.
 if [[ ! -z "$WPE_REMOTE_URL" ]]; then
    WPE_REMOTE=wpengine-remote-$WPE_KEY
    git remote add $WPE_REMOTE $WPE_REMOTE_URL;
@@ -49,12 +53,15 @@ done
 rm -f .gitmodules
 
 
-## Recursively add .wpe-gitignore files into the .gitignore in that directory
+## Recursively merge .wpe-gitignore files into the .gitignore in that directory
 echo "Recursively modifying gitignored files..."
 echo -e "\n.wpe-gitignore" >> .gitignore
 for i in $(find . -type f -name ".wpe-gitignore"); do
+    # Add a header for .wpe-gitignore
     echo -e "\n\n## WP ENGINE GITIGNORE" >> $(dirname $i)/.gitignore;
+    # Copy .wpe-gitignore into .gitignore
     cat $i >> $(dirname $i)/.gitignore;
+    # Add a newline
     echo "" >> $(dirname $i)/.gitignore;
 done
 
